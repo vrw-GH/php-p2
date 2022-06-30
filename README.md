@@ -1,8 +1,8 @@
-# my php project (p2-files)
+# my php project #2 - files
 
 Apache Server = localhost
-<br>Project Folder = document_root/projects/p1
-<br>Deployed to: <a href="https://p1-basic-stuff.herokuapp.com/">p1-basic-stuff.herokuapp.com</a>
+<br>Project Folder = document_root/projects/p2-files
+<br>Deployed to: <a href="https://p2-files.herokuapp.com/">p2-files.herokuapp.com</a>
 
 The git "README.md" file (this) is sanitized and directly read into the site page's "description" <div..> inside <pre..> tags.
 

@@ -1,0 +1,12 @@
+{
+    "name": "vw.de/p2",
+    "description": "My php project (p2-files)",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Victor Wright",
+            "email": "victor.wright@outlook.de"
+        }
+    ],
+    "require": {}
+}

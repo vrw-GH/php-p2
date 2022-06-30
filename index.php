@@ -7,7 +7,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="./style.php" media="screen">
    <link rel="icon" href="../../resources/favicon-apache.png">
-   <title>Projects: P1</title>
+   <title>PHP Projects: P2</title>
 </head>
 
 <?php 
@@ -19,28 +19,7 @@
 
    <!-- ----------------- TITLE ------------------- -->
    <div id="title" class="div_title" style="background-color: <?=$randomcolor; ?>; ">
-      <h1>My first PHP project</h1>
-   </div>
-
-   <!-- ----------------- DESCRIPTION ------------------- -->
-   <div>
-      <div class="div_details">
-         Details of this project: <i>hover to expand...</i>
-      </div>
-      <?php
-            $descfile='./README.md';  //         $descfile='./details.txt';
-            if (file_exists($descfile)) {
-               $file_contents = file_get_contents($descfile);
-               $contents_clean = htmlentities($file_contents, ENT_QUOTES | ENT_IGNORE, "UTF-8");
-            } else {
-               $contents_clean = " (No project README found) ";
-            }
-         ?>
-      <div class="div_descr">
-         <pre>
-         <?php echo $contents_clean ?>
-         </pre>
-      </div>
+      <h1>PHP Project #2 - files</h1>
    </div>
 
    <!-- ----------------- MENU ------------------- -->

@@ -10,15 +10,10 @@
    <title>PHP Projects: P2</title>
 </head>
 
-<?php 
-   // $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
-   $randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.005), 0xFFFFFF));
-?>
-
 <body>
 
    <!-- ----------------- TITLE ------------------- -->
-   <div id="title" class="div_title" style="background-color: <?=$randomcolor; ?>; ">
+   <div id="title" class="div_title">
       <h1>PHP Project #2 - files</h1>
    </div>
 

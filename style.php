@@ -9,6 +9,11 @@ background-color: lightgrey;
 
 .div_title {
 color: black;
+background-color: lightgreen;
+}
+
+.div_home {
+padding: 20px;
 }
 
 .div_details {
@@ -51,8 +56,8 @@ color: lightyellow;
 
 .div_contents {
 display: inlineflex;
-width: 98%;
-padding: 1%;
+width: 99%;
+padding: 10px;
 align-items: center;
 justify-content: center;
 overflow: scroll;
@@ -61,6 +66,25 @@ overflow: scroll;
 .div_contents, iframe {
 background-color: silver;
 width: 98%;
+}
+
+.div_upload {
+display: flex;
+width: 95%;
+}
+
+.div_upload, div_form {
+display: flex;
+}
+
+.div_upload, div_thumbview, img {
+width: 80px;
+<!-- max-height: 30px; -->
+}
+
+.div_upload, div_fileview, img {
+display: flex;
+width: 100%;
 }
 
 .div_footer {

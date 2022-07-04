@@ -12,6 +12,17 @@
 
 <body>
 
+   <?php
+      // $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
+      $randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.005), 0xFFFFFF));
+      $server = $_SERVER['HTTP_HOST'];
+      $thisphp = $_SERVER['PHP_SELF'];
+      $root = 'document_root/' . substr($thisphp,1,strrpos($thisphp,'/'));
+      // $query = $_SERVER ['QUERY_STRING'];
+      $time = date('g:i A (e)');
+      // $time = exec('time /T');
+   ?>
+
    <!-- ----------------- TITLE ------------------- -->
    <div id="title" class="div_title">
       <h1>PHP Project #2 - files</h1>
@@ -57,7 +68,8 @@
 
    <!-- ----------------- CONTENTS ------------------- -->
    <div id="contents" class="div_contents">
-      <?php
+      <div class="div_workarea" style="background-color: <?=$randomcolor; ?>; ">
+         <?php
          if (!empty($_GET["page"])){
             $page = $_GET["page"];
             if (in_array($page.'.php',$pages)) {
@@ -69,6 +81,7 @@
             include($inc_dir.'/_home.php');
          };
       ?>
+      </div>
    </div>
 
    <hr>

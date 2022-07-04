@@ -1,19 +1,25 @@
 <!-- ----------------- UPLOAD ------------------- -->
 <?php
-   $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // with '.' = needed for input "accept" filter
+   // keep '.' = needed for input "accept" filter
+   $upload_dir = './uploads/';
+   $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); 
 
-   if (isset($_FILES['upload-file']) && !empty($_FILES['upload-file']['name'])) {
-      $file = './uploads/' . $_FILES['upload-file']['name'];
+   if (isset($_FILES['upload-file']) && !empty($_FILES['upload-file']['tmp_name'])) {
+      $file = $upload_dir . $_FILES['upload-file']['name'];
       $errors = array();
+
+      // echo $_FILES['upload-file']["name"],'<br>'; //! check
+      // echo $_FILES['upload-file']["tmp_name"],'<br>'; //! check
+      // echo $_FILES['upload-file']["size"],'<br>'; //! check
 
       // ----------------- check if file exists -------------------      
       if (file_exists($file)) {
          $errors[] = "This file already exists.";
-       }
+      }
       
       // ----------------- check allowed ext -------------------      
       // $ext = strtolower(substr($file,strrpos($file,'.')));
-      $ext = '.' . strtolower(pathinfo($file,PATHINFO_EXTENSION));  // '.' needed for $allowed_exts
+      $ext = '.' . strtolower(pathinfo($file,PATHINFO_EXTENSION));  // '.' needed to match $allowed_exts
       if (!in_array($ext, $allowed_exts)) {
          $errors[] = "Cannot upload <{$ext}> file type.";
       } else {
@@ -38,56 +44,65 @@
 ?>
 
 <div class="div_upload">
+
    <div class="div_form">
       <form action="" method="post" enctype="multipart/form-data">
          <input type="file" name="upload-file" accept="<?=implode(',',$allowed_exts);?>" />
-         <br>
+         <!-- <br> -->
          <input type="submit" value="Upload" />
          <br>
       </form>
-      <?php
-         if (isset($_FILES['upload-file']) && !empty($_FILES['upload-file']['name'])) {
-            if (!empty($errors)) {
-               echo '<p style="color: red">';
-               echo '<small><i>File upload error: </i></small><br>';
-               foreach ($errors as $error) {
-                  echo '&nbsp;• ',$error,'<br>';
-               };
-               echo '</p>';
-            } else {
-               echo '<div  style="width: 80px;"> ** Uploaded **'; // class="div_thumbview" 
-               echo '<a href="./uploads/', $_FILES['upload-file']['name'], '"><img src="./uploads/', $_FILES['upload-file']['name'], '"></a>';
-               echo '</div>';
-            };
-         }
-      ?>
-      <hr>
 
-      <i>Uploaded Files:</i>
+      <div class="div_thumbview">
+         <p style="color: red">
+            <?php
+               if (isset($_FILES['upload-file']) && !empty($_FILES['upload-file']['name'])) {
+                  if (!empty($errors)) {
+                     echo '<small><i>File upload error: </i></small><br>';
+                     foreach ($errors as $error) {
+                        echo '&nbsp;• ',$error,'<br>';
+                     };
+                  } else {
+                     $file = $_FILES['upload-file']['name'];
+                     $href = 'index.php?page='.$page.'&file='.$file;
+                     echo '<a href='.$href.'><img src="'.$upload_dir.$file.'" height="200"></a>';
+                     echo '<br><i>** Uploaded **</i>';
+                  };
+               }
+            ?>
+         </p>
+      </div>
+   </div>
+   <hr>
+   <i>Uploaded Files:</i><br>
+   <div class="div_filelist">
+
       <?php
-         $filelist = scandir('./uploads');
+         $filelist = scandir($upload_dir);
          unset($filelist[0],$filelist[1]);
-         $page = $_GET['page'];
-
-         echo '<p>';
             foreach ($filelist as $filekey => $file) {
-               $href = 'index.php?page='.$page.'&file='.$file;
+               $href = './index.php?page=upload&file='.str_replace(" ","%20",$file);
                echo '<a href='.$href.'>'.$file.'</a><br>';
             };
-         echo '</p>';
+         
       ?>
-   </div>
-   <div class="div_fileview">
-      <?php      
-         if (!empty($_GET["file"])) {
-            $file = $_GET["file"];
-            echo '<h4 style="margin-top:0">',$file,'</h4>';
-            if (in_array($file,$filelist)) {
-               echo '<img src="uploads/',$file,'" >';
-            } else {
-               echo '<h4>no such file.</h4>';
-            };            
-         };
-      ?>
+
    </div>
 </div>
+<!-- <div class="div_fileview"> -->
+<?php      
+      if (!empty($_GET["file"])) {
+         $file = $_GET["file"];
+         echo '<b>',$file,'</b><br>';
+         $mime = getimagesize($upload_dir . $file);
+         if (isset($mime['3'])) echo $mime['3'];
+         if (in_array($file,$filelist)) {
+            echo '<div class="div_fileview">';
+            echo '<img src="'.$upload_dir.$file.'" >';
+            echo '</div>';
+         } else {
+            echo '<h4>no such file.</h4>';
+         };            
+      };
+   ?>
+<!-- </div> -->

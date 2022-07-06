@@ -1,5 +1,7 @@
 <?php
-header("Content-type: text/css");
+   header("Content-type: text/css");
+   // $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
+   $randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.006), 0xFFFFFF));
 ?>
 
 body {
@@ -9,11 +11,14 @@ background-color: lightgrey;
 
 .div_title {
 color: black;
+border-radius: 10px;
+padding: 0 10px 0 10px;
 background-color: lightgreen;
 }
 
 .div_menu {
 display: inlineflex;
+border-radius: 10px;
 align-items: center;
 justify-content: left;
 color: yellow;
@@ -29,21 +34,19 @@ text-align: center;
 
 .div_contents {
 display: inlineflex;
-width: 100%;
+background-color: <?= $randomcolor; ?>;
+border-radius: 10px;
+padding: 10px;
+max-height: 80%;
 align-items: center;
 justify-content: center;
-<!-- overflow: scroll; -->
 }
-
-.div_workarea {
-padding: 10px;
-}
-.div_workarea > iframe {
+.div_contents > iframe {
 background-color: silver;
 width: 100%;
 height: 40vh;
 }
-.div_workarea > iframe:hover {
+.div_contents > iframe:hover {
 height: 70vh;
 overflow: scroll;
 }
@@ -70,40 +73,45 @@ height:50vh;
 overflow: scroll;
 }
 
+.div_workarea {
+display: flex;
+}
+
 .div_upload {
-<!-- display: flex; -->
-width: 95%;
+display: flexbox;
+width: 30%;
+max-width: 200px;
 }
 .div_upload > div_form {
-display: flex;
-}
-
-.div_thumbview > img {
-display: flex;
-width: 80px;
-max-width: 80px;
-max-height: 60px;
-}
-
-.div_filelist {
-height: 100px;
-overflow: auto;
-}
-.div_filelist:hover {
-<!-- height: 150px; -->
+display: flexbox;
 overflow: auto;
 }
 
-.div_fileview {
+.div_viewport {
+display: flexbox;
+width: 100%;
+max-height: 70vh;
 background-color: silver;
 margin: 2px;
 padding: 10px;
-max-height: 300px;
 overflow: auto;
 }
-.div_fileview > img {
-display: flexbox;
+.div_viewport > a, img {
+position: relative;
+display: flex;
 max-width: 100%;
+<!-- max-height: 80vh; -->
+}
+
+.div_fileslist {
+display: flexbox;
+font-size: 0.8rem;
+max-height: 70vh;
+overflow: auto;
+}
+
+li {
+margin-bottom: 0.2rem;
 }
 
 .div_footer {

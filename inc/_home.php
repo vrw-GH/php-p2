@@ -1,15 +1,17 @@
-<!-- ----------------- HOME ------------------- -->
+<!-- ----------------- CONTENTS: HOME ------------------- -->
 
 <meta http-equiv="refresh" content="30">
-<strong>This is the Home Page</strong>
-<br>
-The time is : <?=$time; ?>
-<p>
-   Apache Host: &nbsp; <?=$server; ?>
+<div>
+   <strong>This is the Home Page</strong>
    <br>
-   Project Folder: <?=$root ?>
-   <br>
-</p>
+   The time is : <?=$time; ?>
+   <p>
+      Apache Host: &nbsp; <?=$server; ?>
+      <br>
+      Project Folder: <?=$root ?>
+      <br>
+   </p>
+</div>
 
 <div class="div_details">
    Details of this project: <i>hover to expand...</i>

@@ -1,3 +1,28 @@
+<?php
+   // secure any cookies
+   ini_set('session.cookie_httponly', true);
+
+   // Session
+   session_start();
+
+   // check against session hijacking
+   if (isset($_SESSION['last_ip']) === false) {
+      $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
+   }
+
+   if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
+      session_unset();
+      session_destroy();
+   }
+
+   $server = $_SERVER['HTTP_HOST'];
+   $thisphp = $_SERVER['PHP_SELF'];
+   $root = 'document_root/' . substr($thisphp,1,strrpos($thisphp,'/'));
+   // $query = $_SERVER ['QUERY_STRING'];
+   $time = date('g:i A (e)');
+   // $time = exec('time /T');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,16 +36,6 @@
 </head>
 
 <body>
-
-   <?php
-      $server = $_SERVER['HTTP_HOST'];
-      $thisphp = $_SERVER['PHP_SELF'];
-      $root = 'document_root/' . substr($thisphp,1,strrpos($thisphp,'/'));
-      // $query = $_SERVER ['QUERY_STRING'];
-      $time = date('g:i A (e)');
-      // $time = exec('time /T');
-   ?>
-
    <!-- ----------------- TITLE ------------------- -->
    <div id="title" class="div_title">
       <h1>PHP Project #2 - files</h1>

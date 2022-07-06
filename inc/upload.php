@@ -16,18 +16,24 @@
       } else {
          $messages[] = $file2kill.' has been deleted.';
       }
-      if (!empty($_GET)) unset($_GET); // clear GETs buffer -clean slate
+      if (!empty($_GET)) {
+         unset($_GET); // clear GETs buffer -clean slate
+      }
    }
 
    // ----------------- uploading a file -------------------      
    $errors = array();
    // ----------------- check if file upload error ----------------
-   if (!empty($_FILES['upload-file']['error'])){
+   if (!empty($_FILES['upload-file']['error'])) {
       $errors[] = "Error in file upload.";
-      if (!empty($_GET)) unset($_GET);  // clear GETs -clean slate
+      if (!empty($_GET)) {
+         unset($_GET);  // clear GETs -clean slate
+      }
    } elseif (isset($_FILES['upload-file'])) {
       $file = $upload_dir . $_FILES['upload-file']['name'];
-      if (!empty($_GET)) unset($_GET);  // clear GETs -clean slate
+      if (!empty($_GET)) {
+         unset($_GET);  // clear GETs -clean slate
+      }
 
       // ----------------- check if file exists -------------------      
       if (file_exists($file)) {
@@ -96,7 +102,9 @@
             $mime = getimagesize($upload_dir . $file);
             echo '<small>';
             echo 'type="' . strtolower(pathinfo($file,PATHINFO_EXTENSION)).'" ';
-            if (isset($mime['3'])) echo $mime['3'];            
+            if (isset($mime['3'])) {
+               echo $mime['3'];         
+            }
             echo '</small>';
             $href = './index.php?page=upload&file2kill='.str_replace(" ","%20",$file);            
             echo '<br><img src="'.$upload_dir.$file.'">';

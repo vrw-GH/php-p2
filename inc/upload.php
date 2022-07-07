@@ -25,7 +25,7 @@
    $errors = array();
    // ----------------- check if file upload error ----------------
    if (!empty($_FILES['upload-file']['error'])) {
-      $errors[] = "Error in file upload.";
+      $errors[] = "Error in file upload. <i>(ie: PHP Max-size exceeded.)</i>";
       if (!empty($_GET)) {
          unset($_GET);  // clear GETs -clean slate
       }

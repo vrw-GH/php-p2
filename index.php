@@ -4,12 +4,17 @@
 
    // Session
    session_start();
-
-   // check against session hijacking
-   if (isset($_SESSION['last_ip']) === false) {
-      $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
+   function erase_dir($folder) {
+      array_map('unlink', array_filter((array) glob($folder)));
    }
-
+   
+   if (isset($_SESSION['last_ip']) === false) {
+      //clean slate for new session
+      $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
+      erase_dir("./myuploads/*");  //! not good solution 
+   }
+   
+   // check against session hijacking
    if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
       session_unset();
       session_destroy();

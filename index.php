@@ -1,19 +1,23 @@
 <?php
+   // functions
+   function erase_dir($folder) {
+      array_map('unlink', array_filter((array) glob($folder)));
+   }
+   function onshutdown(){
+      erase_dir("./myuploads/*");
+   }
+   register_shutdown_function('onshutdown');
+
    // secure any cookies
    ini_set('session.cookie_httponly', true);
 
    // Session
    session_start();
-   function erase_dir($folder) {
-      array_map('unlink', array_filter((array) glob($folder)));
-   }
-   
    if (isset($_SESSION['last_ip']) === false) {
       //clean slate for new session
       $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
       erase_dir("./myuploads/*");  //! not good solution 
    }
-   
    // check against session hijacking
    if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
       session_unset();

@@ -1,6 +1,7 @@
 <?php
    // functions
    function erase_dir($folder) {
+      
       array_map('unlink', array_filter((array) glob($folder)));
    }
    function onshutdown(){

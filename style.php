@@ -1,7 +1,7 @@
 <?php
-   header("Content-type: text/css");
-   // $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
-   $randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.006), 0xFFFFFF));
+header("Content-type: text/css");
+// $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
+$randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.006), 0xFFFFFF));
 ?>
 
 body {
@@ -109,9 +109,16 @@ font-size: 0.8rem;
 max-height: 70vh;
 overflow: auto;
 }
-
-li {
+.div_fileslist > ol {
+padding-left: 1rem;
+}
+.div_fileslist > ol li {
+font-size: 0.8rem;
 margin-bottom: 0.2rem;
+margin: 5px;
+}
+.div_fileslist > ol li::marker {
+font-size: 0.6rem;
 }
 
 .div_footer {

@@ -27,28 +27,28 @@
 
    // ---------- downloading a file ------------
    if (!empty($_GET["file2download"])) {
-      $file2download = basename($_GET["file2download"]);
+      $file2download = urldecode($_GET["file2download"]);
+      $filepath = $upload_dir . $file2download;
       $messages = array();
-      if (!file_exists($upload_dir . $file2download)) {
-         $messages[] = "$file2download file not found.";
+      if (preg_match('/^[^.][-a-z0-9_.]+[a-z]$/i', $file2download) || !file_exists($filepath)) {
+         $messages[] = "$file2download - invalid file (or not found!).";
+         $messages[] = "( Requested : $filepath ).";
       } else {
          header('Content-Description: File Transfer');
          header('Content-Type: application/octet-stream');
-         // header("Content-Type: ".getimagesize($upload_dir . $file2download)['mime']);
-         header('Content-Disposition: attachment; filename="' . $file2download . '"');
+         header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
          header('Expires: 0');
          header('Cache-Control: must-revalidate');
          header('Pragma: public');
-         header('Content-Length: ' . filesize($upload_dir . $file2download));
-         ob_clean();
+         header('Content-Length: ' . filesize($filepath));
          flush(); // Flush system output buffer
-         readfile($file2download);
+         // readfile($filepath);
          $messages[] = "File $file2download downloaded.";
-         exit(); //! ??? why is this necessary?
+         // exit(); //! ??? why is this necessary?
       }
       if (!empty($_GET)) {
          unset($_GET); // clear GETs buffer -clean slate
-         header("Location:" . $uri);
+         // header("Location:" . $uri);
       }
    }
 

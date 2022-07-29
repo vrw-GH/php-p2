@@ -160,7 +160,7 @@
             echo 'size="' . number_format(filesize($upload_dir . $file) / 1000, 0) . 'Kb" ';
             echo isset($mime['3']) ? $mime['3'] : "(no size info)";
             echo '</small>';
-            echo '<br><img src="' . $upload_dir . $file . '">';
+            echo '<br><img src="' . $upload_dir . $file . '" alt="viewport-image">';
             echo '<div style="position: absolute; top: 200px;">';
             $href_file = urlencode($file);
             echo '<a href="./index.php?page=files&file2download=' . $href_file . '" style="background: rgba(10, 10, 10, 0.25); border-radius: 0 10px 3px 0;color: white; text-decoration: none;"><small>Download&nbsp;</small></a>';
@@ -178,8 +178,8 @@
             }
          } else {
             echo '<b>', $filenm, '</b><br>';
-            echo '<i>** Uploaded ** </i><small>Click image for details</small>';
-            echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" ></a>';
+            echo '<i>** Uploaded ** </i><small>Click image for full view and details</small>';
+            echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" width="200px" alt="thumb-image" ></a>';
          }
       } else {
          echo implode("<br>", $messages);

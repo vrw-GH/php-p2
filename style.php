@@ -76,7 +76,7 @@ overflow: scroll;
 }
 
 .div_workarea {
-<!-- display: flex; -->
+display: flex;
 }
 
 .div_upload {
@@ -87,22 +87,6 @@ max-width: 200px;
 .div_upload > div_form {
 display: flexbox;
 overflow: auto;
-}
-
-.div_viewport {
-display: flexbox;
-width: 100%;
-max-height: 70vh;
-background-color: silver;
-margin: 2px;
-padding: 10px;
-overflow: auto;
-}
-.div_viewport > a, img {
-position: relative;
-display: flex;
-max-width: 100%;
-<!-- max-height: 80vh; -->
 }
 
 .div_fileslist {
@@ -121,6 +105,22 @@ margin: 5px;
 }
 .div_fileslist > ol li::marker {
 font-size: 0.6rem;
+}
+
+.div_viewport {
+display: flexbox;
+width: 100%;
+max-height: 70vh;
+background-color: silver;
+margin: 2px;
+padding: 10px;
+overflow: auto;
+}
+.div_viewport > a, img {
+position: relative;
+display: flex;
+max-width: 100%;
+<!-- max-height: 80vh; -->
 }
 
 .div_footer {

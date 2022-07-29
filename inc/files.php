@@ -1,5 +1,5 @@
 <!-- ----------------- CONTENTS: UPLOAD ------------------- -->
-<div class="POST code">
+<div class="PHP code">
    <?php
    $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
    $upload_dir = './uploads/';
@@ -149,10 +149,6 @@
    </div>
 
    <div class="div_viewport">
-
-      <!-- test -->
-      ** viewport test ** <br />
-
       <?php
       if (!empty($_GET["file"])) {
          $file = $_GET["file"];
@@ -181,7 +177,6 @@
                echo '<p style="color: red;">&nbsp;• ', $error, '</p>';
             }
          } else {
-            // $file = $_FILES['file2upload']['name'];            
             echo '<b>', $filenm, '</b><br>';
             echo '<i>** Uploaded ** </i><small>Click image for details</small>';
             echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" ></a>';
@@ -190,7 +185,5 @@
          echo implode("<br>", $messages);
       }
       ?>
-      <!-- test -->
-      <br />** viewport test -end **
    </div>
 </div>

@@ -76,7 +76,7 @@ overflow: scroll;
 }
 
 .div_workarea {
-display: flex;
+<!-- display: flex; -->
 }
 
 .div_upload {

@@ -2,109 +2,115 @@
 <div class="PHP code">
    <?php
    $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
-   $upload_dir = './newuploads/';
+   $upload_dir = './fileuploads/';
    $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
    $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
    $errors = array();
 
    // ---------- deleting a file ------------
-   if (!empty($_GET["file2kill"])) {
-      $file2kill = basename($_GET["file2kill"]);
-      $messages = array();
-      if (!file_exists($upload_dir . $file2kill)) {
-         $messages[] = "This file does not exist.";
-      } elseif (!unlink($upload_dir . $file2kill)) {
-         $messages[] = $file2kill . ' cannot be deleted due to an error.';
-      } else {
-         $messages[] = $file2kill . ' has been deleted.';
-         // header("Location:" . $baseurl);
-      }
-      if (!empty($_GET)) {
-         unset($_GET); // clear GETs buffer -clean slate
-         header("Location:" . $baseurl);
+   if (isset($_GET["file2kill"])) {
+      if (!empty($_GET["file2kill"])) {
+         $file2kill = basename($_GET["file2kill"]);
+         $messages = array();
+         if (!file_exists($upload_dir . $file2kill)) {
+            $messages[] = "This file does not exist.";
+         } elseif (!unlink($upload_dir . $file2kill)) {
+            $messages[] = $file2kill . ' cannot be deleted due to an error.';
+         } else {
+            $messages[] = $file2kill . ' has been deleted.';
+            // header("Location:" . $baseurl);
+         }
+         if (!empty($_GET)) {
+            unset($_GET); // clear GETs buffer -clean slate
+            header("Location:" . $baseurl);
+         }
       }
    }
 
    // ---------- downloading a file ------------
-   if (!empty($_GET["file2download"])) {
-      $file2download = urldecode($_GET["file2download"]);
-      $filepath = $upload_dir . $file2download;
-      $type = filetype($filepath);
-      $messages = array();
-      if (!file_exists($filepath)) {
-         $messages[] = "$file2download - invalid file (or file not found!).";
-         $messages[] = "( Requested : $filepath ).";
-      } else {
-         ob_get_clean();
-         // ob_clean();  //! throws error    ???
-         header('Content-Description: File Transfer');
-         header('Content-Type: application/octet-stream');
-         header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
-         // header('Content-Transfer-Encoding: binary');
-         header('Expires: 0');
-         header('Cache-Control: must-revalidate');
-         header('Pragma: public');
-         header('Content-Length: ' . filesize($filepath));
-         flush(); // Flush system output buffer
-         readfile($filepath);
-         $messages[] = "File $file2download downloaded.";
-         // exit(); //! ??? why is this necessary?
-      }
-      if (!empty($_GET)) {
-         unset($_GET); // clear GETs buffer -clean slate
-         // header("Location:" . $baseurl);
+   if (isset($_GET["file2download"])) {
+      if (!empty($_GET["file2download"])) {
+         $file2download = urldecode($_GET["file2download"]);
+         $filepath = $upload_dir . $file2download;
+         $type = filetype($filepath);
+         $messages = array();
+         if (!file_exists($filepath)) {
+            $messages[] = "$file2download - invalid file (or file not found!).";
+            $messages[] = "( Requested : $filepath ).";
+         } else {
+            ob_get_clean();
+            // ob_clean();  //! throws error    ???
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
+            // header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filepath));
+            flush(); // Flush system output buffer
+            readfile($filepath);
+            $messages[] = "File $file2download downloaded.";
+            // exit(); //! ??? why is this necessary?
+         }
+         if (!empty($_GET)) {
+            unset($_GET); // clear GETs buffer -clean slate
+            // header("Location:" . $baseurl);
+         }
       }
    }
 
    // ----------------- uploading a file -------------------            
-   // ----------------- check if file upload error ----------------
-   if (!empty($_FILES['file2upload']['error'])) {
-      if (empty($_FILES['file2upload']['tmp_name'])) {
-         $errors[] = "Please choose a file to upload.";
-      } else {
-         $errors[] = "Error in file upload. <i>(ie: PHP Max-size exceeded ??.)</i>";
-      }
-      if (!empty($_GET)) {
-         unset($_GET); // clear GETs -clean slate
-      }
-   } elseif (isset($_FILES['file2upload'])) {
-      $file = $_FILES['file2upload']['name'];
-      $ext = '.' . strtolower(pathinfo($file, PATHINFO_EXTENSION)); // '.' needed to match $allowed_exts
-      $filenm = pathinfo($file, PATHINFO_FILENAME);
-      $file = $upload_dir . preg_replace('/[^A-Za-z0-9\-\_\(\)]/', '_', $filenm) . $ext;
-      if (!empty($_GET)) {
-         unset($_GET); // clear GETs -clean slate
-      }
-
-      // ----------------- check if file exists -------------------      
-      if (file_exists($file)) {
-         $errors[] = "This file already exists.";
-      }
-
-      // ----------------- check allowed ext -------------------      
-      if (!in_array($ext, $allowed_exts)) {
-         $errors[] = "Cannot upload <{$ext}> file type.";
-      } else {
-         // ----------------- check if image -------------------
-         $mime = getimagesize($_FILES['file2upload']["tmp_name"]);
-         if ($mime == false) {
-            $errors[] = "File is not an image!";
+   if (isset($_FILES['file2upload'])) {
+      // ----------------- check if file upload error ----------------
+      if (!empty($_FILES['file2upload']['error'])) {
+         if (empty($_FILES['file2upload']['tmp_name'])) {
+            $errors[] = "Please choose a file to upload.";
+         } else {
+            $errors[] = "Error in file upload. <i>(ie: PHP Max-size exceeded ??.)</i>";
          }
-      }
+         if (!empty($_GET)) {
+            unset($_GET); // clear GETs -clean slate
+         }
+      } else {
+         $file = $_FILES['file2upload']['name'];
+         $ext = '.' . strtolower(pathinfo($file, PATHINFO_EXTENSION)); // '.' needed to match $allowed_exts
+         $filenm = pathinfo($file, PATHINFO_FILENAME);
+         $file = $upload_dir . preg_replace('/[^A-Za-z0-9\-\_\(\)]/', '_', $filenm) . $ext;
+         if (!empty($_GET)) {
+            unset($_GET); // clear GETs -clean slate
+         }
 
-      // ----------------- check size -------------------
-      $size = $_FILES['file2upload']['size'];
-      if ($size > 500000) {
-         $errors[] = "File must be < 500kb.";
-      }
+         // ----------------- check if file exists -------------------      
+         if (file_exists($file)) {
+            $errors[] = "This file already exists.";
+         }
 
-      // ----------------- save file -------------------
-      if (empty($errors)) {
-         move_uploaded_file($_FILES['file2upload']['tmp_name'], $file);
-      }
-      if (!empty($_GET)) {
-         unset($_GET); // clear GETs buffer 
-         header("Location:" . $baseurl);
+         // ----------------- check allowed ext -------------------      
+         if (!in_array($ext, $allowed_exts)) {
+            $errors[] = "Cannot upload <{$ext}> file type.";
+         } else {
+            // ----------------- check if image -------------------
+            $mime = getimagesize($_FILES['file2upload']["tmp_name"]);
+            if ($mime == false) {
+               $errors[] = "File is not an image!";
+            }
+         }
+
+         // ----------------- check size -------------------
+         $size = $_FILES['file2upload']['size'];
+         if ($size > 500000) {
+            $errors[] = "File must be < 500kb.";
+         }
+
+         // ----------------- save file -------------------
+         if (empty($errors)) {
+            move_uploaded_file($_FILES['file2upload']['tmp_name'], $file);
+         }
+         if (!empty($_GET)) {
+            unset($_GET); // clear GETs buffer 
+            header("Location:" . $baseurl);
+         }
       }
    }
 
@@ -150,7 +156,7 @@
 
    <div class="div_viewport">
       <?php
-      if (!empty($_GET["file"])) {
+      if (isset($_GET["file"]) || !empty($_GET["file"])) {
          $file = $_GET["file"];
          if (in_array($file, $filelist)) {
             echo '<b>', basename($file, '.' . strtolower(pathinfo($file, PATHINFO_EXTENSION))), '</b><br>';
@@ -177,9 +183,9 @@
                echo '<p style="color: red;">&nbsp;• ', $error, '</p>';
             }
          } else {
-            echo '<b>', $filenm, '</b><br>';
-            echo '<i>** Uploaded ** </i><small>Click image for full view and details</small>';
-            echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" width="200px" alt="thumb-image" ></a>';
+            echo '<i>Uploaded: </i><b>', $filenm, '</b>';
+            echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" width="auto" height="100" alt="thumb-image" ></a>';
+            echo '<i><small>Click image for full view and details</small></i>';
          }
       } else {
          echo implode("<br>", $messages);

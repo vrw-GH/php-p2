@@ -2,7 +2,7 @@
 <div class="PHP code">
    <?php
    $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
-   $upload_dir = './uploads/';
+   $upload_dir = './newuploads/';
    $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
    $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
    $errors = array();

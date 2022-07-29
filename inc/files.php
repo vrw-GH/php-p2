@@ -1,10 +1,7 @@
 <!-- ----------------- CONTENTS: UPLOAD ------------------- -->
 <div class="POST code">
    <?php
-
-   use function PHPSTORM_META\type;
-
-   $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=upload';
+   $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
    $upload_dir = './myuploads/';
    $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
    $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
@@ -39,6 +36,7 @@
          $messages[] = "( Requested : $filepath ).";
       } else {
          ob_get_clean();
+         // ob_clean();  //! throws error    ???
          header('Content-Description: File Transfer');
          header('Content-Type: application/octet-stream');
          header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
@@ -47,7 +45,6 @@
          header('Cache-Control: must-revalidate');
          header('Pragma: public');
          header('Content-Length: ' . filesize($filepath));
-         ob_clean();
          flush(); // Flush system output buffer
          readfile($filepath);
          $messages[] = "File $file2download downloaded.";
@@ -62,7 +59,11 @@
    // ----------------- uploading a file -------------------            
    // ----------------- check if file upload error ----------------
    if (!empty($_FILES['file2upload']['error'])) {
-      $errors[] = "Error in file upload. <i>(ie: PHP Max-size exceeded.)</i>";
+      if (empty($_FILES['file2upload']['tmp_name'])) {
+         $errors[] = "Please choose a file to upload.";
+      } else {
+         $errors[] = "Error in file upload. <i>(ie: PHP Max-size exceeded ??.)</i>";
+      }
       if (!empty($_GET)) {
          unset($_GET); // clear GETs -clean slate
       }
@@ -130,7 +131,7 @@
                sort($filelist, SORT_STRING || SORT_FLAG_CASE);
                foreach ($filelist as $filekey => $afile) {
                   if (!is_dir($afile)) {
-                     $href = './index.php?page=upload&file=' . pathinfo($afile, PATHINFO_BASENAME);
+                     $href = './index.php?page=files&file=' . pathinfo($afile, PATHINFO_BASENAME);
                      $a = pathinfo($afile, PATHINFO_BASENAME);
                      if (isset($_GET["file"]) && $a === $_GET["file"]) {
                         $li_style = 'style="background: yellow;"';
@@ -162,9 +163,9 @@
             echo '<br><img src="' . $upload_dir . $file . '">';
             echo '<div style="position: absolute; top: 200px;">';
             $href_file = urlencode($file);
-            echo '<a href="./index.php?page=upload&file2download=' . $href_file . '" style="background: rgba(10, 10, 10, 0.25); border-radius: 0 10px 3px 0;color: white; text-decoration: none;"><small>Download&nbsp;</small></a>';
+            echo '<a href="./index.php?page=files&file2download=' . $href_file . '" style="background: rgba(10, 10, 10, 0.25); border-radius: 0 10px 3px 0;color: white; text-decoration: none;"><small>Download&nbsp;</small></a>';
             echo " ";
-            echo '<a href="./index.php?page=upload&file2kill=' . $href_file . '" style="background: rgba(10, 10, 10, 0.25); border-radius: 0 10px 3px 0;color: white; text-decoration: none;"><small>Delete&nbsp;</small></a>';
+            echo '<a href="./index.php?page=files&file2kill=' . $href_file . '" style="background: rgba(10, 10, 10, 0.25); border-radius: 0 10px 3px 0;color: white; text-decoration: none;"><small>Delete&nbsp;</small></a>';
             echo '</div>';
          } else {
             echo '<h4>no such file.</h4>';

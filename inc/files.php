@@ -131,9 +131,9 @@
          <div class="div_fileslist">
             <ol>
                <?php
-               // $filelist = scandir($upload_dir);
-               $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)
-               // unset($filelist[0], $filelist[1]);
+               $filelist = scandir($upload_dir);
+               unset($filelist[0], $filelist[1]);
+               // $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)               
                if ($filelist != false) {
                   sort($filelist, SORT_STRING || SORT_FLAG_CASE);
                   foreach ($filelist as $filekey => $afile) {
@@ -150,7 +150,7 @@
                      }
                   }
                } else {
-                  echo "<li> No Files </li>";
+                  echo "<li><small><i>File list is empty.</i></small></li>";
                }
                ?>
             </ol>

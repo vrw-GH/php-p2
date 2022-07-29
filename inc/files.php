@@ -3,6 +3,10 @@
    <?php
    $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
    $upload_dir = './fileuploads/';
+   if (!is_dir($upload_dir)) {
+      echo "INVALID UPLOAD DIRECTORY - $upload_dir";
+      exit();
+   }
    $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
    $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
    $errors = array();
@@ -131,10 +135,12 @@
          <div class="div_fileslist">
             <ol>
                <?php
-               $filelist = scandir($upload_dir);
-               unset($filelist[0], $filelist[1]);
-               // $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)               
-               if ($filelist != false) {
+               if (scandir($upload_dir) === false || count(scandir($upload_dir)) <= 3) {
+                  echo "<li><small><i>File list is empty.</i></small></li>";
+               } else {
+                  // $filelist = scandir($upload_dir);
+                  // unset($filelist[0], $filelist[1]);
+                  $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)               
                   sort($filelist, SORT_STRING || SORT_FLAG_CASE);
                   foreach ($filelist as $filekey => $afile) {
                      if (!is_dir($afile)) {
@@ -149,8 +155,6 @@
                            pathinfo($afile, PATHINFO_FILENAME) . '</a></li>';
                      }
                   }
-               } else {
-                  echo "<li><small><i>File list is empty.</i></small></li>";
                }
                ?>
             </ol>

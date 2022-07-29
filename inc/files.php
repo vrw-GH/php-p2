@@ -154,9 +154,7 @@
       </div>
    </div>
 
-   <div class="div_viewport">
-      test1
-      <div>test2</div>
+   <div class="div_viewport1">
       <?php
       if (isset($_GET["file"]) || !empty($_GET["file"])) {
          $file = $_GET["file"];

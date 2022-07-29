@@ -31,9 +31,10 @@
       $filepath = $upload_dir . $file2download;
       $messages = array();
       if (preg_match('/^[^.][-a-z0-9_.]+[a-z]$/i', $file2download) || !file_exists($filepath)) {
-         $messages[] = "$file2download - invalid file (or not found!).";
+         $messages[] = "$file2download - invalid file (or file not found!).";
          $messages[] = "( Requested : $filepath ).";
       } else {
+         ob_get_clean();
          header('Content-Description: File Transfer');
          header('Content-Type: application/octet-stream');
          header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
@@ -41,8 +42,9 @@
          header('Cache-Control: must-revalidate');
          header('Pragma: public');
          header('Content-Length: ' . filesize($filepath));
+         ob_clean();
          flush(); // Flush system output buffer
-         // readfile($filepath);
+         readfile($filepath);
          $messages[] = "File $file2download downloaded.";
          // exit(); //! ??? why is this necessary?
       }

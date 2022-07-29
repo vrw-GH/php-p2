@@ -132,9 +132,10 @@
             <ol>
                <?php
                // $filelist = scandir($upload_dir);
+               echo "test1"; //!tes
                $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)
-               echo print_r($filelist); //!tes
                // unset($filelist[0], $filelist[1]);
+
                // sort($filelist, SORT_STRING || SORT_FLAG_CASE);
                // foreach ($filelist as $filekey => $afile) {
                //    if (!is_dir($afile)) {

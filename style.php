@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/css");
-// $randomcolor=dechex(rand(0, 10000000)); // also produces dark colors :(
-$randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.006), 0xFFFFFF));
+// $randomcolor=dechex(rand(0, 10000000)); //* also produces dark colors :(
+$randomcolor = sprintf('#%06X', mt_rand(intval(0xFFFFFF / 1.006), 0xFFFFFF)); //* good for a lighter color-set
 ?>
 
 body {
@@ -45,9 +45,10 @@ justify-content: center;
 background-color: silver;
 width: 100%;
 height: 40vh;
+min-height: 40vh;
 }
 .div_contents > iframe:hover {
-height: 70vh;
+height: calc(80vh - 150px);
 overflow: scroll;
 }
 
@@ -66,10 +67,11 @@ display: inlineflex;
 overflow-y: hidden;
 background-color: white;
 height: 20vh;
+min-height: 20vh;
 padding: 0px 10px 20px 10px;
 }
 .div_descr:hover {
-height:50vh;
+height: calc(60vh - 150px);
 overflow: scroll;
 }
 

@@ -149,6 +149,10 @@
    </div>
 
    <div class="div_viewport">
+
+      <!-- test -->
+      ** viewport test ** <br />
+
       <?php
       if (!empty($_GET["file"])) {
          $file = $_GET["file"];
@@ -186,5 +190,7 @@
          echo implode("<br>", $messages);
       }
       ?>
+      <!-- test -->
+      <br />** viewport test -end **
    </div>
 </div>

@@ -133,27 +133,28 @@
                <?php
                // $filelist = scandir($upload_dir);
                $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)
+               echo print_r($filelist); //!tes
                // unset($filelist[0], $filelist[1]);
-               sort($filelist, SORT_STRING || SORT_FLAG_CASE);
-               foreach ($filelist as $filekey => $afile) {
-                  if (!is_dir($afile)) {
-                     $href = './index.php?page=files&file=' . pathinfo($afile, PATHINFO_BASENAME);
-                     $a = pathinfo($afile, PATHINFO_BASENAME);
-                     if (isset($_GET["file"]) && $a === $_GET["file"]) {
-                        $li_style = 'style="background: yellow;"';
-                     } else {
-                        $li_style = '';
-                     }
-                     echo "<li $li_style >" . '<a href="' . $href . '">' .
-                        pathinfo($afile, PATHINFO_FILENAME) . '</a></li>';
-                  }
-               };
+               // sort($filelist, SORT_STRING || SORT_FLAG_CASE);
+               // foreach ($filelist as $filekey => $afile) {
+               //    if (!is_dir($afile)) {
+               //       $href = './index.php?page=files&file=' . pathinfo($afile, PATHINFO_BASENAME);
+               //       $a = pathinfo($afile, PATHINFO_BASENAME);
+               //       if (isset($_GET["file"]) && $a === $_GET["file"]) {
+               //          $li_style = 'style="background: yellow;"';
+               //       } else {
+               //          $li_style = '';
+               //       }
+               //       echo "<li $li_style >" . '<a href="' . $href . '">' .
+               //          pathinfo($afile, PATHINFO_FILENAME) . '</a></li>';
+               //    }
+               // }
                ?>
             </ol>
          </div>
       </div>
    </div>
-   test
+
    <div class="div_viewport">
       <?php
       if (isset($_GET["file"]) || !empty($_GET["file"])) {

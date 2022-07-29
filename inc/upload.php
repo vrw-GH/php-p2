@@ -1,7 +1,10 @@
 <!-- ----------------- CONTENTS: UPLOAD ------------------- -->
 <div class="POST code">
    <?php
-   $uri = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=upload';
+
+   use function PHPSTORM_META\type;
+
+   $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=upload';
    $upload_dir = './myuploads/';
    $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
    $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
@@ -17,11 +20,11 @@
          $messages[] = $file2kill . ' cannot be deleted due to an error.';
       } else {
          $messages[] = $file2kill . ' has been deleted.';
-         // header("Location:" . $uri);
+         // header("Location:" . $baseurl);
       }
       if (!empty($_GET)) {
          unset($_GET); // clear GETs buffer -clean slate
-         header("Location:" . $uri);
+         header("Location:" . $baseurl);
       }
    }
 
@@ -29,8 +32,9 @@
    if (!empty($_GET["file2download"])) {
       $file2download = urldecode($_GET["file2download"]);
       $filepath = $upload_dir . $file2download;
+      $type = filetype($filepath);
       $messages = array();
-      if (preg_match('/^[^.][-a-z0-9_.]+[a-z]$/i', $file2download) || !file_exists($filepath)) {
+      if (!file_exists($filepath)) {
          $messages[] = "$file2download - invalid file (or file not found!).";
          $messages[] = "( Requested : $filepath ).";
       } else {
@@ -38,6 +42,7 @@
          header('Content-Description: File Transfer');
          header('Content-Type: application/octet-stream');
          header('Content-Disposition: attachment; filename="' . basename($file2download) . '"');
+         // header('Content-Transfer-Encoding: binary');
          header('Expires: 0');
          header('Cache-Control: must-revalidate');
          header('Pragma: public');
@@ -50,7 +55,7 @@
       }
       if (!empty($_GET)) {
          unset($_GET); // clear GETs buffer -clean slate
-         // header("Location:" . $uri);
+         // header("Location:" . $baseurl);
       }
    }
 
@@ -98,7 +103,7 @@
       }
       if (!empty($_GET)) {
          unset($_GET); // clear GETs buffer 
-         header("Location:" . $uri);
+         header("Location:" . $baseurl);
       }
    }
 
@@ -119,18 +124,22 @@
          <div class="div_fileslist">
             <ol>
                <?php
-               $filelist = scandir($upload_dir);
-               unset($filelist[0], $filelist[1]);
+               // $filelist = scandir($upload_dir);
+               $filelist = preg_grep('/^([^.])/', scandir($upload_dir)); // removes . and .. and also .[dot] files (.keep)
+               // unset($filelist[0], $filelist[1]);
+               sort($filelist, SORT_STRING || SORT_FLAG_CASE);
                foreach ($filelist as $filekey => $afile) {
-                  $href = './index.php?page=upload&file=' . pathinfo($afile, PATHINFO_BASENAME);
-                  $a = pathinfo($afile, PATHINFO_BASENAME);
-                  if (isset($_GET["file"]) && $a === $_GET["file"]) {
-                     $li_style = 'style="background: yellow;"';
-                  } else {
-                     $li_style = '';
+                  if (!is_dir($afile)) {
+                     $href = './index.php?page=upload&file=' . pathinfo($afile, PATHINFO_BASENAME);
+                     $a = pathinfo($afile, PATHINFO_BASENAME);
+                     if (isset($_GET["file"]) && $a === $_GET["file"]) {
+                        $li_style = 'style="background: yellow;"';
+                     } else {
+                        $li_style = '';
+                     }
+                     echo "<li $li_style >" . '<a href="' . $href . '">' .
+                        pathinfo($afile, PATHINFO_FILENAME) . '</a></li>';
                   }
-                  echo "<li $li_style >" . '<a href="' . $href . '">' .
-                     pathinfo($afile, PATHINFO_FILENAME) . '</a></li>';
                };
                ?>
             </ol>
@@ -160,7 +169,7 @@
          } else {
             echo '<h4>no such file.</h4>';
          }
-      } elseif (isset($filenm)) {
+      } elseif (isset($filenm) || isset($_FILES['file2upload'])) {
          if (!empty($errors)) {
             echo 'File upload error: <small><i>' . $_FILES['file2upload']['name'] . '</i></small><br>';
             foreach ($errors as $error) {

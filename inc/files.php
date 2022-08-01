@@ -1,15 +1,18 @@
 <!-- ----------------- CONTENTS: UPLOAD ------------------- -->
 <div class="PHP code">
    <?php
-   $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
-   $upload_dir = './fileuploads/';
-   if (!is_dir($upload_dir)) {
-      echo "INVALID UPLOAD DIRECTORY - $upload_dir";
-      exit();
+   // ----------------- settings / initialization -------------------  
+   {
+      $baseurl = explode('?', $_SERVER['REQUEST_URI'], 2)[0] . '?page=files';
+      $upload_dir = './fileuploads/';
+      if (!is_dir($upload_dir)) {
+         echo "INVALID UPLOAD DIRECTORY - $upload_dir";
+         exit();
+      }
+      $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
+      $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
+      $errors = array();
    }
-   $allowed_exts = array('.jpg', '.jpeg', '.png', '.gif'); // keep the '.' = needed for input "accept" filter
-   $messages = array("Select or upload something.", implode(", ", $allowed_exts)); // default message
-   $errors = array();
 
    // ---------- deleting a file ------------
    if (isset($_GET["file2kill"])) {
@@ -118,6 +121,16 @@
       }
    }
 
+   // ----------------- functions -------------------  
+   {
+      function cleanfilename($fname)
+      {
+         $cleaned = preg_replace('/[^A-Za-z0-9\-\_\(\)]/', '_', $fname);
+         $cleaned = str_replace(" ", "_", $cleaned);
+         return $cleaned;
+      }
+   }
+
    ?>
 </div>
 
@@ -186,13 +199,13 @@
          }
       } elseif (isset($filenm) || isset($_FILES['file2upload'])) {
          if (!empty($errors)) {
-            echo 'File upload error: <small><i>' . $_FILES['file2upload']['name'] . '</i></small><br>';
+            echo 'File upload error: <small><i>' . $_FILES['file2upload']['name'] . " (" . intval($_FILES['file2upload']['size'] / 1000) . 'kb) </i></small><br>';
             foreach ($errors as $error) {
                echo '<p style="color: red;">&nbsp;• ', $error, '</p>';
             }
          } else {
             echo '<i>Uploaded: </i><b>', $filenm, '</b>';
-            echo '<br><a href=index.php?page=' . $page . '&file=' . str_replace(" ", "_", $filenm) . $ext . '><img src="' . $file . '" width="auto" height="100" alt="thumb-image" ></a>';
+            echo '<br><a href=index.php?page=' . $page . '&file=' . cleanfilename($filenm) . $ext . '><img src="' . $file . '" width="auto" height="100" alt="thumb-image" ></a>';
             echo '<i><small>Click image for full view and details</small></i>';
          }
       } else {

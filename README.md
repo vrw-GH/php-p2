@@ -1,11 +1,17 @@
 # my php project #2 - files
 
-<br>Deployed to: <a href="https://php2-files.herokuapp.com/">p2-files.herokuapp.com</a>
+>This is a project to explore file activities such as uploads/listing/downloads etc.
 
-The git "README.md" file (this) is sanitized and directly read into the site page's "description" <div..> inside <pre..> tags.
+[![screenshot](./assets/screenshot.png)](https://php2-files.vercel.app)
 
-This is a project to explore file activities such as uploads/listing/downloads etc.
-<br>
-** File upload only works (for the moment) on localhost. **
+*File "uploads" only works (for the moment) on localhost.*
 
-GitHub: <a href="https://github.com/vrw-GH/php-p2">vrw-gh.github.io/php-p2</a>
+* The git "README.md" file (this) is sanitized and directly read into the site page's "description" <div..> inside <pre..> tags.
+
+<pre>
+Developer:   Victor Wright
+Client:      Self
+Date:        30 Jun 2022
+Deployed V1: <a href="https://php2-files.vercel.app">https://php2-files.vercel.app</a>
+GH Page:     <a href="https://vrw-gh.github.io/php-p2/">vrw-gh.github.io/php-p2</a>
+</pre>

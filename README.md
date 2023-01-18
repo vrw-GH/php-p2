@@ -2,7 +2,7 @@
 
 >This is a project to explore file activities such as uploads/listing/downloads etc.
 
-[![screenshot](./assets/screenshot.png)](https://php2-files.vercel.app)
+[![screenshot](./assets/screenshot.png)](https://www.wrightsdesk.com/dev/p2-files)
 
 *File "uploads" only works (for the moment) on localhost.*
 
@@ -12,6 +12,6 @@
 Developer:   Victor Wright
 Client:      Self
 Date:        30 Jun 2022
-Deployed V1: <a href="https://php2-files.vercel.app">https://php2-files.vercel.app</a>
+Deployed V1: <a href="https://www.wrightsdesk.com/dev/p2-files">https://www.wrightsdesk.com/dev/p2-files</a>
 GH Page:     <a href="https://vrw-gh.github.io/php-p2/">vrw-gh.github.io/php-p2</a>
 </pre>

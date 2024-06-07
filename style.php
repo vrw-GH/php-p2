@@ -66,12 +66,13 @@ padding-left: 2rem;
 display: inlineflex;
 overflow-y: hidden;
 background-color: white;
-height: 20vh;
-min-height: 20vh;
+height: 30vh;
+min-height: 50px;
 padding: 0px 10px 20px 10px;
 }
 .div_descr:hover {
-height: calc(60vh - 150px);
+height: max-content;
+max-height: 70vh;
 overflow: scroll;
 }
 

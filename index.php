@@ -1,40 +1,3 @@
-<?php
-// functions
-function erase_dir($folder)
-{
-
-   array_map('unlink', array_filter((array) glob($folder)));
-}
-function onshutdown()
-{
-   erase_dir("./myuploads/*");
-}
-register_shutdown_function('onshutdown');
-
-// secure any cookies
-ini_set('session.cookie_httponly', true);
-
-// Session
-session_start();
-if (isset($_SESSION['last_ip']) === false) {
-   //clean slate for new session
-   $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
-   erase_dir("./myuploads/*");  //! not good solution 
-}
-// check against session hijacking
-if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
-   session_unset();
-   session_destroy();
-}
-
-$server = $_SERVER['HTTP_HOST'];
-$thisphp = $_SERVER['PHP_SELF'];
-$root = 'document_root/' . substr($thisphp, 1, strrpos($thisphp, '/'));
-// $query = $_SERVER ['QUERY_STRING'];
-$time = date('g:i A (e)');
-// $time = exec('time /T');
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,6 +11,44 @@ $time = date('g:i A (e)');
 </head>
 
 <body>
+
+   <?php
+   // functions
+   function erase_dir($folder)
+   {
+
+      array_map('unlink', array_filter((array) glob($folder)));
+   }
+   function onshutdown()
+   {
+      erase_dir("./myuploads/*");
+   }
+   register_shutdown_function('onshutdown');
+
+   // secure any cookies
+   ini_set('session.cookie_httponly', true);
+
+   // Session
+   session_start();
+   if (isset($_SESSION['last_ip']) === false) {
+      //clean slate for new session
+      $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
+      erase_dir("./myuploads/*");  //! not good solution 
+   }
+   // check against session hijacking
+   if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
+      session_unset();
+      session_destroy();
+   }
+
+   $server = $_SERVER['HTTP_HOST'];
+   $thisphp = $_SERVER['PHP_SELF'];
+   $root = 'document_root/' . substr($thisphp, 1, strrpos($thisphp, '/'));
+   // $query = $_SERVER ['QUERY_STRING'];
+   $time = date('g:i A (e)');
+   // $time = exec('time /T');
+   ?>
+
    <!-- ----------------- TITLE ------------------- -->
    <div id="title" class="div_title">
       <h1>PHP Project #2 - files</h1>
@@ -109,7 +110,7 @@ $time = date('g:i A (e)');
    <hr>
    <!-- ----------------- FOOTER ------------------- -->
    <div id="footer" class="div_footer">
-      <a href="..\">Go Back (Projects List)</a>
+      <a href="..\" target="_parent">Go Back (Projects List)</a>
    </div>
 
 </body>
